@@ -12,9 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Change to the directory containing package.json if it's in a subdirectory
-      - run: cd functions
-
       # Install dependencies
       - run: npm install
 
