@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "875225395768",
+    "project_id": "basic-stripe",
+    "storage_bucket": "basic-stripe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875225395768:android:5cb8119aea3afb067daccd",
+        "android_client_info": {
+          "package_name": "com.samwrotethecode.basic_stripe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875225395768-25sts3d8iv4k0n18h6in13v882176isp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBPli6-r9py9pWLp2zjb7fKTqC8hECNuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875225395768-25sts3d8iv4k0n18h6in13v882176isp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "875225395768-eqv3r3pg1nqn9nnis1afp29m1bt86utg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.samwrotethecode.basicStripe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

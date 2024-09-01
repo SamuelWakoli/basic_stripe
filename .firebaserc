@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "basic-stripe"
+  },
+  "targets": {},
+  "etags": {
+    "basic-stripe": {
+      "extensionInstances": {
+        "firestore-stripe-payments": "562af724ee00c1ecd8a0c00dd206bbb5da0cc96c773b0fc6789ec0b2bcb0d183"
+      }
+    }
+  },
+  "dataconnectEmulatorConfig": {}
+}
