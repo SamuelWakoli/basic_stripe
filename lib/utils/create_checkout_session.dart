@@ -20,8 +20,8 @@ Future<void> createCheckoutSession({
       'customerEmail': email, // Pass customer email
       'customerId': customerId, // Pass customer ID if available
       'quantity': quantity, // Pass the quantity
-      'successUrl': "https://github.com/SamuelWakoli",
-      'cancelUrl': "https://developer.android.com/jetpack/compose/documentation",
+      'successUrl': "https://basic-stripe.web.app/payments",
+      'cancelUrl': "https://basic-stripe.web.app/paymentCancelled",
     });
 
     final sessionUrl = response.data['url'];
