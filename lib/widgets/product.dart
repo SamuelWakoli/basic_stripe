@@ -1,4 +1,4 @@
-import 'package:basic_stripe/utils/create_payment_link.dart';
+import 'package:basic_stripe/utils/create_checkout_session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -122,19 +122,19 @@ class _ProductListItemState extends State<ProductListItem> {
                                   alignment: Alignment.bottomRight,
                                   child: OutlinedButton(
                                       onPressed: () {
-                                        createPaymentLink(
-                                            context: context,
-                                            productId: product.id,
-                                            customerId: stripeCustomerId,
-                                            email: userEmail,
-                                            quantity: 1);
-
-                                        // createCheckoutSession(
+                                        // createPaymentLink(
                                         //     context: context,
                                         //     productId: product.id,
                                         //     customerId: stripeCustomerId,
                                         //     email: userEmail,
                                         //     quantity: 1);
+
+                                        createCheckoutSession(
+                                            context: context,
+                                            productId: product.id,
+                                            customerId: stripeCustomerId,
+                                            email: userEmail,
+                                            quantity: 1);
                                       },
                                       child: Text(type == "Recurring"
                                           ? "Subscribe"

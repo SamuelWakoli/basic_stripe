@@ -37,7 +37,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot product = snapshot.data!.docs[index];
-                return ProductListItem(product: product);
+                return Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: ProductListItem(product: product));
               },
             );
           }),

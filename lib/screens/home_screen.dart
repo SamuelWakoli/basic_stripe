@@ -1,4 +1,3 @@
-import 'package:basic_stripe/screens/products_screen.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -36,13 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProductsScreen(),
-                    ));
+                Navigator.pushNamed(context, '/products');
               },
               child: const Text("Products"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/payments');
+              },
+              child: const Text("Payments"),
             ),
           ],
         ),
