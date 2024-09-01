@@ -44,3 +44,4 @@ app.*.map.json
 
 # Ignore Firebase Build files
 .firebase/
+/android/app/google-services.json
