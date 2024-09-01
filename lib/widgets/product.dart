@@ -42,6 +42,7 @@ class _ProductListItemState extends State<ProductListItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Container(
+        constraints: const BoxConstraints(maxWidth: 600),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Theme.of(context).colorScheme.primaryContainer),

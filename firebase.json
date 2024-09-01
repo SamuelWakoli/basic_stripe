@@ -48,6 +48,16 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "dynamicLinks": true
+      }
+    ],
     "frameworksBackend": {
       "region": "us-central1"
     }
