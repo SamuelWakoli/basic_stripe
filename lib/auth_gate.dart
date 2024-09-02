@@ -17,7 +17,9 @@ class _AuthGateState extends State<AuthGate> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return const SignInScreen();
+            return const SignInScreen(
+              showPasswordVisibilityToggle: true,
+            );
           }
           return const HomeScreen();
         });

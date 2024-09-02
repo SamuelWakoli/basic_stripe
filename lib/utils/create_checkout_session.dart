@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> createCheckoutSession({
@@ -12,9 +12,9 @@ Future<void> createCheckoutSession({
       customerId, // in case we don't have customer id, we can create new customer in cloud using the email
 }) async {
   try {
-    HttpsCallable callable =
-        FirebaseFunctions.instance.httpsCallable('createCheckoutSessionViaHTTP');
-        
+    HttpsCallable callable = FirebaseFunctions.instance
+        .httpsCallable('createCheckoutSessionViaHTTP');
+
     final response = await callable.call(<String, dynamic>{
       'productId': productId, // Pass the product ID
       'customerEmail': email, // Pass customer email
@@ -30,7 +30,7 @@ Future<void> createCheckoutSession({
     if (sessionUrl != null) {
       final Uri url = Uri.parse(sessionUrl);
 
-      if (!await launchUrl(url, webOnlyWindowName: '_blank')) {
+      if (!await launchUrl(url, webOnlyWindowName: '_self')) {
         throw Exception('Could not launch $url');
       }
     }

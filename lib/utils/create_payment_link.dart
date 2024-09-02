@@ -26,7 +26,7 @@ Future<void> createPaymentLink({
     if (paymentUrl != null) {
       final Uri url = Uri.parse(paymentUrl);
 
-      if (!await launchUrl(url, webOnlyWindowName: null)) {
+      if (!await launchUrl(url, webOnlyWindowName: '_self')) {
         throw Exception('Could not launch $url');
       }
     }
