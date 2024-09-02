@@ -7,7 +7,7 @@ Future<void> buyProduct({
   required BuildContext context,
   required String productId,
   required String productName,
-  required double unitAmount,
+  required dynamic unitAmount,
   required String priceInDollars,
   required bool isRecurring,
   required int quantity,
@@ -47,148 +47,160 @@ Future<void> buyProduct({
                       color: Theme.of(context).colorScheme.primary,
                     ),
               ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Card.outlined(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Product:"),
-                          const SizedBox(height: 4),
-                          Text(
-                            productName,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            priceInDollars,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                          ),
-                        ],
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Card.outlined(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Product:"),
+                            const SizedBox(height: 4),
+                            Text(
+                              productName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              priceInDollars,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    "Choose a quantity:",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 4,
-                    children: [1, 20, 50, 100, 200, "Custom"].map((qty) {
-                      bool isSelected = qty == selectedQuantity ||
-                          (qty == "Custom" && showCustomQuantityField);
+                    const SizedBox(height: 16),
+                    Text(
+                      "Choose a quantity:",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [1, 20, 50, 100, 200, "Custom"].map((qty) {
+                        bool isSelected = qty == selectedQuantity ||
+                            (qty == "Custom" && showCustomQuantityField);
 
-                      return ChoiceChip(
-                        label: Text(
-                          qty.toString(),
-                          style: TextStyle(
-                            color: isSelected
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Theme.of(context).colorScheme.onSurface,
+                        return ChoiceChip(
+                          label: Text(
+                            qty.toString(),
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                          selected: isSelected,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              if (qty != "Custom") {
+                                selectedQuantity = qty as int;
+                                showCustomQuantityField = false;
+                              } else {
+                                showCustomQuantityField = true;
+                                selectedQuantity =
+                                    1; // Default value for custom
+                              }
+                            });
+                          },
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                          selectedColor: Theme.of(context).colorScheme.primary,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    if (showCustomQuantityField)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              selectedQuantity = int.tryParse(value) ?? 1;
+                            });
+                          },
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                            labelText: "Enter custom quantity",
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
-                        selected: isSelected,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            if (qty != "Custom") {
-                              selectedQuantity = qty as int;
-                              showCustomQuantityField = false;
-                            } else {
-                              showCustomQuantityField = true;
-                              selectedQuantity = 1; // Default value for custom
-                            }
-                          });
-                        },
-                        backgroundColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                        selectedColor: Theme.of(context).colorScheme.primary,
-                        elevation: 2,
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Total Amount: \$$totalAmount",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        quantity = selectedQuantity;
+                        initiatePurchase();
+                      },
+                      icon: const Icon(Icons.payment),
+                      label: const Text("Make Payment"),
+                      style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                  if (showCustomQuantityField)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            selectedQuantity = int.tryParse(value) ?? 1;
-                          });
-                        },
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: InputDecoration(
-                          labelText: "Enter custom quantity",
-                          labelStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
                       ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Total Amount: \$$totalAmount",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  )
-                ],
-              ),
-              actions: [
+                  ],
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(ctx1).pop(); // Dismiss the dialog
                   },
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    quantity = selectedQuantity;
-                    initiatePurchase();
-                  },
-                  icon: const Icon(Icons.payment),
-                  label: const Text("Make Payment"),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 12.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
