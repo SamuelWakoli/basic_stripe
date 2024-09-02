@@ -1,8 +1,7 @@
 import 'package:basic_stripe/auth_gate.dart';
-import 'package:basic_stripe/screens/home_screen.dart';
 import 'package:basic_stripe/screens/payment_cancelled_screen.dart';
 import 'package:basic_stripe/screens/payments_screen.dart';
-import 'package:basic_stripe/screens/products_screen.dart';
+import 'package:basic_stripe/screens/pricing_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
@@ -44,9 +43,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const AuthGate(), routes: {
-      '/': (context) => const HomeScreen(),
-      '/products': (context) => const ProductsScreen(),
+    return MaterialApp(routes: {
+      '/': (context) => const AuthGate(),
+      '/products': (context) => const PricingScreen(),
       '/paymentCancelled': (context) => const PaymentCancelledScreen(),
       '/payments': (context) => const PaymentsScreen()
     });
