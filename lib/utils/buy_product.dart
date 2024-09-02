@@ -142,7 +142,8 @@ Future<void> buyProduct({
                         child: TextField(
                           onChanged: (value) {
                             setState(() {
-                              selectedQuantity = int.tryParse(value) ?? 1;
+                              selectedQuantity =
+                                  int.tryParse(value.toString()) ?? 1;
                             });
                           },
                           keyboardType: TextInputType.number,
@@ -175,7 +176,10 @@ Future<void> buyProduct({
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     PaymentButton(
-                      onPaymentInitiated: initiatePurchase,
+                      onPaymentInitiated: () {
+                        quantity = selectedQuantity;
+                        initiatePurchase();
+                      },
                     ),
                   ],
                 ),
@@ -210,10 +214,10 @@ class PaymentButton extends StatefulWidget {
   const PaymentButton({required this.onPaymentInitiated, super.key});
 
   @override
-  _PaymentButtonState createState() => _PaymentButtonState();
+  PaymentButtonState createState() => PaymentButtonState();
 }
 
-class _PaymentButtonState extends State<PaymentButton> {
+class PaymentButtonState extends State<PaymentButton> {
   bool _isLoading = false;
 
   @override
