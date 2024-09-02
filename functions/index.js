@@ -99,13 +99,14 @@ exports.createPaymentLink = functions.https.onCall(async (data, context) => {
  * @param {number} data.quantity - The quantity of the product.
  * @param {string} data.successUrl - The URL to redirect to upon successful payment.
  * @param {string} data.cancelUrl - The URL to redirect to if the payment is canceled.
+ * @param {string} data.mode - Determines if it's a subscription or payment.
  *
  * @returns {Object} - Contains the checkout session URL and the customer ID.
  * @throws {functions.https.HttpsError} - Throws an error if quantity is invalid, customer cannot be found or created, or price for the product is not found.
  */
 exports.createCheckoutSessionViaHTTP = functions.https.onCall(async (data, context) => {
     try {
-        const { productId, customerEmail, customerId, quantity, successUrl, cancelUrl } = data;
+        const { productId, customerEmail, customerId, quantity, successUrl, cancelUrl, mode } = data;
 
         // Validate quantity
         if (!quantity || quantity < 1) {
@@ -162,7 +163,7 @@ exports.createCheckoutSessionViaHTTP = functions.https.onCall(async (data, conte
                 price: price.id,
                 quantity: quantity,
             }],
-            mode: 'payment',
+            mode: mode,
             success_url: successUrl,
             cancel_url: cancelUrl,
             metadata: {

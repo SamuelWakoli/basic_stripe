@@ -10,6 +10,7 @@ Future<void> createCheckoutSession({
   required int quantity,
   String?
       customerId, // in case we don't have customer id, we can create new customer in cloud using the email
+  required String mode,
 }) async {
   try {
     HttpsCallable callable = FirebaseFunctions.instance
@@ -22,6 +23,7 @@ Future<void> createCheckoutSession({
       'quantity': quantity, // Pass the quantity
       'successUrl': "https://basic-stripe.web.app/payments",
       'cancelUrl': "https://basic-stripe.web.app/paymentCancelled",
+      'mode': mode,
     });
 
     final sessionUrl = response.data['url'];

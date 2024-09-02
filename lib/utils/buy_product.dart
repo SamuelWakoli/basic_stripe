@@ -1,3 +1,5 @@
+import 'dart:async'; // Import Timer
+
 import 'package:basic_stripe/utils/create_checkout_session.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,12 @@ Future<void> buyProduct({
 
   // Function to initiate the purchase
   void initiatePurchase() => createCheckoutSession(
-        context: context,
-        productId: productId,
-        customerId: stripeCustomerId,
-        email: userEmail,
-        quantity: quantity,
-      );
+      context: context,
+      productId: productId,
+      customerId: stripeCustomerId,
+      email: userEmail,
+      quantity: quantity,
+      mode: isRecurring ? "subscription" : "payment");
 
   if (isRecurring) {
     // Handle recurring purchases directly
@@ -172,18 +174,8 @@ Future<void> buyProduct({
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        quantity = selectedQuantity;
-                        initiatePurchase();
-                      },
-                      icon: const Icon(Icons.payment),
-                      label: const Text("Make Payment"),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                    PaymentButton(
+                      onPaymentInitiated: initiatePurchase,
                     ),
                   ],
                 ),
@@ -208,6 +200,52 @@ Future<void> buyProduct({
           },
         );
       },
+    );
+  }
+}
+
+class PaymentButton extends StatefulWidget {
+  final VoidCallback onPaymentInitiated;
+
+  const PaymentButton({required this.onPaymentInitiated, super.key});
+
+  @override
+  _PaymentButtonState createState() => _PaymentButtonState();
+}
+
+class _PaymentButtonState extends State<PaymentButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        setState(() {
+          _isLoading = false;
+        });
+        widget.onPaymentInitiated();
+      },
+      icon: const Icon(Icons.payment),
+      label: Row(
+        children: [
+          const Text("Make Payment"),
+          if (_isLoading) const SizedBox(width: 8), // Spacing
+          if (_isLoading)
+            SizedBox(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
     );
   }
 }

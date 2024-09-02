@@ -64,9 +64,10 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                 // Map<String, dynamic> metadata =
                 //     payment.get('metadata') as Map<String, dynamic>;
 
-                return Padding(
+                return Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8.0, vertical: 4.0),
+                  constraints: const BoxConstraints(maxWidth: 500),
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
