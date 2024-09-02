@@ -13,6 +13,18 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   User currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
+  void initState() {
+    super.initState();
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/',
+        (route) => true,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -44,35 +56,39 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
             }
 
             return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
+              itemCount: snapshot.data!.docs.reversed.length,
               itemBuilder: (context, index) {
-                DocumentSnapshot payment = snapshot.data!.docs[index];
+                DocumentSnapshot payment =
+                    snapshot.data!.docs.reversed.toList()[index];
 
-                Map<String, dynamic> metadata =
-                    payment.get('metadata') as Map<String, dynamic>;
+                // Map<String, dynamic> metadata =
+                //     payment.get('metadata') as Map<String, dynamic>;
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8.0, vertical: 4.0),
                   child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Payment ID: ${payment.id}"),
-                        Text("Amount: ${payment.get('amount')}"),
-                        Text(
-                            "Amount: ${(payment.get('amount') / 100).toStringAsFixed(2)}"),
-                        const Text("Items: "),
-                        Column(
-                          children: payment.get('items').map((item) {
-                            return Text(
-                                "${item.get('description') + " " + item.get('quantity')}");
-                          }).toList(),
-                        ),
-                        const Divider(),
-                        const Text("Metadata:"),
-                        Text(metadata.toString()),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Payment ID: ${payment.id}"),
+                          Text(
+                              "Amount: ${(payment.get('amount') / 100).toStringAsFixed(2)}"),
+                          Column(
+                            children: (payment.get('items') as List<dynamic>)
+                                .map((item) {
+                              return Text(
+                                  "${item['description']} | QTY: ${item['quantity'].toString()}");
+                            }).toList(),
+                          ),
+                          const Divider(),
+                          const Text(
+                              "Product Expired: //Update this with cloud function"),
+                          // Text(metadata.toString()),
+                        ],
+                      ),
                     ),
                   ),
                 );
