@@ -62,7 +62,13 @@ exports.createPaymentLink = functions.https.onCall(async (data, context) => {
 
         const price = prices.data[0];
 
-        // Create a payment link and use metadata to attach customer ID
+        // Get current date and time
+        const now = new Date();
+        const timeStamp = now.toISOString();
+        const date = now.toLocaleDateString('en-US');
+        const time = now.toLocaleTimeString('en-US');
+
+        // Create a payment link and use metadata to attach customer ID, timestamp, date, and time
         const paymentLink = await stripe.paymentLinks.create({
             line_items: [{
                 price: price.id,
@@ -70,6 +76,9 @@ exports.createPaymentLink = functions.https.onCall(async (data, context) => {
             }],
             metadata: {
                 customerId: customer.id, // Attach customer ID via metadata
+                time_stamp: timeStamp, // ISO 8601 timestamp
+                date: date, // Date in American format
+                time: time // Time in American format
             },
         });
 
@@ -82,7 +91,7 @@ exports.createPaymentLink = functions.https.onCall(async (data, context) => {
 
 /**
  * Creates a checkout session for a specified product and customer.
- * 
+ *
  * @param {Object} data - The data provided by the client.
  * @param {string} data.productId - The ID of the product for which the checkout session is to be created.
  * @param {string} [data.customerEmail] - The email of the customer. Used if customerId is not provided.
@@ -90,7 +99,7 @@ exports.createPaymentLink = functions.https.onCall(async (data, context) => {
  * @param {number} data.quantity - The quantity of the product.
  * @param {string} data.successUrl - The URL to redirect to upon successful payment.
  * @param {string} data.cancelUrl - The URL to redirect to if the payment is canceled.
- * 
+ *
  * @returns {Object} - Contains the checkout session URL and the customer ID.
  * @throws {functions.https.HttpsError} - Throws an error if quantity is invalid, customer cannot be found or created, or price for the product is not found.
  */
@@ -139,6 +148,12 @@ exports.createCheckoutSessionViaHTTP = functions.https.onCall(async (data, conte
 
         const price = prices.data[0];
 
+        // Get current date and time
+        const now = new Date();
+        const timeStamp = now.toISOString();
+        const date = now.toLocaleDateString('en-US');
+        const time = now.toLocaleTimeString('en-US');
+
         // Create a checkout session with the customer and the specified quantity
         const session = await stripe.checkout.sessions.create({
             customer: customer.id,
@@ -150,6 +165,12 @@ exports.createCheckoutSessionViaHTTP = functions.https.onCall(async (data, conte
             mode: 'payment',
             success_url: successUrl,
             cancel_url: cancelUrl,
+            metadata: {
+                customerId: customer.id, // Attach customer ID via metadata
+                time_stamp: timeStamp, // ISO 8601 timestamp
+                date: date, // Date in American format
+                time: time // Time in American format
+            },
         });
 
         return { url: session.url, customerId: customer.id };
