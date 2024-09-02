@@ -217,7 +217,7 @@ class _ProductCardState extends State<ProductCard> {
                       ? ""
                       : "per ${priceItem['interval']}";
 
-                  double unitAmount = priceItem['unit_amount'];
+                  var unitAmount = priceItem['unit_amount'];
                   String priceInDollars = "\$${unitAmount / 100} $interval";
 
                   return Padding(
